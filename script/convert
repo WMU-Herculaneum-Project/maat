@@ -7,6 +7,7 @@ import sys
 import logging
 import lxml.etree as ET
 from lingua import Language, LanguageDetectorBuilder
+import traceback
 
 sys.path.append(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -14,7 +15,7 @@ from maat.converter import Converter
 from maat.utils import to_string
 from maat.create import (
     create_training_text,
-    convert_to_test_cases,
+    create_test_cases,
 )
 
 
@@ -317,7 +318,9 @@ def process(file_path):
         try:
             conversion = converter.convert(ab)
         except Exception as e:
-            logging.error(f"Some other error converting {file_path} {ab_index} {e}\n")
+            logging.error(
+                f"Some other error converting {file_path} {ab_index} {e}\n{traceback.format_exc()}"
+            )
             continue
 
         d = {}
@@ -333,30 +336,22 @@ def process(file_path):
         try:
             training_text = to_string(create_training_text(conversion))
         except Exception as e:
-            logging.error(f"Error creating training text {file_path} {ab_index} {e}\n")
+            logging.error(
+                f"Error creating training text {file_path} {ab_index} {e}\n{traceback.format_exc()}"
+            )
             continue
         # remove ab tags from training text
 
         training_text = re.sub(r"</?ab[^>]*>", "", training_text)
         d["training_text"] = training_text
         d["test_cases"] = []
-        cases = convert_to_test_cases(conversion)
-        # print(f"Found {len(cases)} test cases")
+        cases = create_test_cases(training_text)
         for c_index, c in enumerate(cases):
             cd = {}
             cd["case_index"] = c_index + 1
             cd["id"] = f"{_corpus_id}/{_file_id}/{ab_index + 1}/{c_index + 1}"
-            alts = [a for a in c["alternatives"] if a is not None]
-            lengths = [len(a) for a in alts]
-            some_none_alt = any(["None" in a for a in c["alternatives"]])
-            if "None" not in c["test_case"] and not some_none_alt:
-                cd["number_alternatives"] = len(alts)
-                cd["max_length"] = max(lengths)
-                cd["min_length"] = min(lengths)
-                cd["mode_length"] = mode(lengths)
-                cd["test_case"] = c["test_case"]
-                cd["alternatives"] = alts
-                d["test_cases"].append(cd)
+            cd["test_case"] = c
+            d["test_cases"].append(cd)
         print(json.dumps(d, ensure_ascii=False))
 
 

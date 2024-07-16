@@ -130,6 +130,8 @@ def mode(ns):
     """
     Get the mode of a list of numbers
     """
+    if not ns:
+        return 0
     return max(set(ns), key=ns.count)
 
 
