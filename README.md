@@ -28,7 +28,7 @@ The `script/convert` script is used to convert the TEI XML files to MAAT. The sc
 This is how the first files were converted:
 
 ```sh
-$ script/convert /Volumes/general/corpora/papyri/idp.data/DDB_EpiDoc_XML  /Volumes/general/corpora/papyri/idp.data/DCLP  /Volumes/general/corpora/papyri/idp.data/APD  /Volumes/general/corpora/inscriptions | tee /tmp/results.json | jq .id
+$ script/convert /Volumes/general/corpora/papyri/idp.data/DDB_EpiDoc_XML  /Volumes/general/corpora/papyri/idp.data/DCLP /Volumes/general/corpora/inscriptions | tee /tmp/results.json | jq .id
 ```
 
 This places the results in `/tmp/results.json`, and prints the `id` field of each document to standard output.
