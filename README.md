@@ -21,7 +21,7 @@ First, you need to install the TEI XML files that you want to convert to MAAT.
 The first corpora added to the MAAT corpus are the following:
 
 1. [The Duke Databank of Documentary Papyri](https://papyri.info/docs/ddbdp) data can be cloned from [here](https://github.com/papyri/idp.data).
-2. [The Digital Corpus of Literary Papyri] (https://papyri.info/browse/dclp) data can be cloned from [here] (https://github.com/papyri/idp.data).
+2. [The Digital Corpus of Literary Papyri](https://papyri.info/browse/dclp/) data can be cloned from [here](https://github.com/papyri/idp.data).
 3. [Epigraphic Database Heidelberg](https://edh.ub.uni-heidelberg.de/home) data can be downloaded from [here](https://edh.ub.uni-heidelberg.de/data/download).
 
 The `script/convert` script is used to convert the TEI XML files to MAAT. The script takes one or more directories as input, and writes the MAAT JSON-LD to standard output.
